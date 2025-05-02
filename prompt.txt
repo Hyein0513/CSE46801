@@ -1,0 +1,68 @@
+1. 
+"Create a D3.js datatable for the Chocolate Sales data that:
+1. Data Processing:
+ - Loads the cleaned CSV data we prepared previously
+ - Implements column-based sorting (ascending/descending) when clicking headers
+ - Enables text-based filtering for each column
+2. Visual Design:
+ - Creates a clean, responsive table layout with appropriate styling
+ - Highlights rows on hover for better readability
+ - Displays pagination if the dataset exceeds a certain size (e.g., 10 rows)
+3. Interaction:
+ - Implements click events on rows to select/highlight specific data points
+ - Stores selected row information for cross-visualization communication
+ - Provides visual feedback for selected rows
+Please include detailed comments explaining key implementation decisions."
+
+2.
+"Implement a D3.js time series area chart for the Chocolate Sales data that:
+
+1. Data Processing:
+ - Aggregates sales data by month across all products/categories
+ - Formats dates properly on the x-axis
+ - Calculates cumulative sales values for the area chart
+2. Visual Design:
+ - Creates a main area chart showing sales trends over time
+ - Adds a smaller 'context' area chart below for navigation/brushing
+ - Uses an appropriate color scheme that matches our existing visualizations
+3. Brushing Functionality:
+ - Implements d3.brushX() to allow users to select a time range
+ - Updates the main chart to zoom into the selected time period
+ - Maintains the context chart to show the complete timeline
+ - Provides smooth transitions when the brush selection changes
+Please structure your code with clear separation between data processing, visualization creation, and interaction
+handling."
+
+3.
+"Develop the code needed to connect our three visualization components (datatable, area chart, and stacked bar
+chart) into a coordinated dashboard:
+1. Cross-Filtering Implementation:
+ - When a time range is selected in the area chart, filter both the datatable and bar chart to that period
+ - When a row is selected in the datatable, highlight corresponding data in both charts
+ - When a category is selected in the bar chart, filter the table and highlight the area chart accordingly
+2. State Management:
+ - Implement a simple state management system to track selections across components
+ - Create update functions for each visualization that respond to state changes
+ - Ensure consistent visual feedback across all components when selections change
+3. User Experience:
+ - Add a 'Reset' button to clear all filters and selections
+ - Implement smooth transitions when views update
+ - Ensure the dashboard layout is responsive and components resize appropriately
+Please include detailed comments explaining the communication mechanism between visualization components."
+
+4.
+"If you drag (brush) from the central context area chart, modify the function to enlarge the top area chart to suit that range.
+Currently, I have a problem that I have to drag from the top to magnify it. Please let me know where I need to fix it"
+
+5.
+"Implement the following interactions:
+- Click on the bar chart bar to filter into that category
+- Click on a row in the table to highlight the data
+- Click the Reset button to initialize all filters, selection status
+
+Please make sure that each interaction is connected to each other based on the global state."
+
+6.
+"Implement the following interactions:
+- Column sorting function
+- Reflect different visualizations of the selected table rows"

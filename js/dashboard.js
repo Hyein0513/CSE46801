@@ -5,7 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
       selectedCategory: null,
       currentPage: 0,
       pageSize: 10,
-      filters: {}
+      filters: {},
+      sortKey: null,
+      sortOrder: 'asc'
     };
   
     const parseDate = d3.timeParse("%d-%b-%y");
@@ -64,22 +66,42 @@ document.addEventListener("DOMContentLoaded", function () {
         return inTimeRange && inCategory && matchFilters;
       });
     }
-  
+ 
+
     function updateTable() {
       const container = d3.select("#table-container");
       const paginationDiv = d3.select("#pagination");
       container.html("");
       paginationDiv.html("");
-      const data = filteredData();
-  
+    
+      let data = filteredData();
+    
+      // 정렬 적용
+      if (state.sortKey) {
+        data.sort((a, b) => {
+          let valA = a[state.sortKey] || "";
+          let valB = b[state.sortKey] || "";
+    
+          // 날짜 처리
+          if (a[state.sortKey] instanceof Date) {
+            valA = a[state.sortKey].getTime();
+            valB = b[state.sortKey].getTime();
+          }
+    
+          if (valA < valB) return state.sortOrder === "asc" ? -1 : 1;
+          if (valA > valB) return state.sortOrder === "asc" ? 1 : -1;
+          return 0;
+        });
+      }
+    
       const start = state.currentPage * state.pageSize;
       const paged = data.slice(start, start + state.pageSize);
       const keys = ["Sales Person", "Country", "Product", "Date", "Amount", "Boxes Shipped", "Sales", "Category"];
-  
+    
       const table = container.append("table");
       const thead = table.append("thead");
       const tbody = table.append("tbody");
-  
+    
       // Filter row
       const filterRow = thead.append("tr");
       keys.forEach(k => {
@@ -94,14 +116,24 @@ document.addEventListener("DOMContentLoaded", function () {
             updateTable();
           });
       });
-  
-      // Header row
-      thead.append("tr")
-        .selectAll("th")
+    
+      // Header row with sorting
+      const headerRow = thead.append("tr");
+      headerRow.selectAll("th")
         .data(keys).enter()
         .append("th")
-        .text(d => d);
-  
+        .text(d => d)
+        .style("cursor", "pointer")
+        .on("click", function (event, d) {
+          if (state.sortKey === d) {
+            state.sortOrder = state.sortOrder === "asc" ? "desc" : "asc";
+          } else {
+            state.sortKey = d;
+            state.sortOrder = "asc";
+          }
+          updateTable();
+        });
+    
       const rows = tbody.selectAll("tr")
         .data(paged).enter()
         .append("tr")
@@ -110,17 +142,17 @@ document.addEventListener("DOMContentLoaded", function () {
           state.selectedRow = d;
           updateAll();
         });
-  
+    
       rows.selectAll("td")
         .data(d => keys.map(k => {
-          if (k === "Date") return formatDate(d.Date);
+          if (k === "Date") return d.Date ? formatDate(d.Date) : "";
           if (k === "Sales") return d.Sales;
           return d[k] || "";
         }))
         .enter()
         .append("td")
         .text(d => d);
-  
+    
       // Pagination
       const pageCount = Math.ceil(data.length / state.pageSize);
       for (let i = 0; i < pageCount; i++) {
@@ -133,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
           });
       }
     }
+    
   
     function updateAreaChart() {
       const container = d3.select("#area-chart");
