@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chocolate Sales Dashboard</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="js/dashboard.js" defer></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+
+    h1 {
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    h2.section-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+      margin-top: 0;
+    }
+
+    #filters-info {
+      margin-bottom: 15px;
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+    }
+
+    button {
+      display: block;
+      margin: 0 auto 20px auto;
+      padding: 10px 16px;
+      font-size: 14px;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005f99;
+    }
+
+    #dashboard {
+      display: grid;
+      grid-template-rows: auto auto auto;
+      gap: 20px;
+    }
+
+    .row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: nowrap;
+    }
+
+    .card {
+      background-color: white;
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+    }
+
+    #context-chart {
+      background-color: white;
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      table-layout: fixed;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e0e0e0;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    th {
+      background-color: #f1f1f1;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tr.selected {
+      background-color: #e3f7d3;
+    }
+
+    .selected-cell {
+      background-color: #c2f0c2 !important;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .x-axis text {
+      transform: rotate(-40deg);
+      text-anchor: end;
+    }
+
+    .filter-input {
+      width: 100%;
+      padding: 4px 6px;
+      margin-bottom: 5px;
+      font-size: 13px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .pagination {
+      text-align: center;
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .pagination button {
+      margin: 0;
+      padding: 6px 10px;
+      font-size: 13px;
+      border: 1px solid #000000;
+      background: white;
+      color: #000000;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .pagination button.active {
+      font-weight: bold;
+      background-color: #007acc;
+      color: white;
+      border-color: #007acc;
+    }
+
+    #table-container-wrapper {
+      overflow-x: auto;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Chocolate Sales Dashboard</h1>
+  <button id="reset-btn">Reset Filters</button>
+  <div id="filters-info"></div>
+  <div id="dashboard">
+
+    <!-- Top Row: Area + Stacked Bar Charts -->
+    <div class="row">
+      <div class="card">
+        <h2 class="section-title">Sales Over Time</h2>
+        <div id="area-chart"></div>
+      </div>
+      <div class="card">
+        <h2 class="section-title">Category Breakdown</h2>
+        <div id="bar-chart"></div>
+      </div>
+    </div>
+
+    <!-- Middle Row: Context Chart -->
+    <div class="card">
+      <h2 class="section-title">Timeline Brush Control</h2>
+      <div id="context-chart"></div>
+    </div>
+
+    <!-- Bottom Row: Filterable Paginated Table -->
+    <div class="card">
+      <h2 class="section-title">Detailed Transactions</h2>
+      <div id="table-container-wrapper">
+        <div id="table-container"></div>
+      </div>
+      <div id="pagination" class="pagination"></div>
+    </div>
+
+  </div>
+</body>
+</html>

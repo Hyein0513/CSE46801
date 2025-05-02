@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chocolate Sales Time Series Area Chart</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="js/area_chart.js" defer></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+    }
+    .area {
+      fill: steelblue;
+      opacity: 0.7;
+    }
+    .context-area {
+      fill: lightsteelblue;
+    }
+    .brush .selection {
+      fill: #999;
+      fill-opacity: 0.3;
+      stroke: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Chocolate Sales Over Time</h2>
+  <svg id="chart" width="960" height="500"></svg>
+</body>
+</html>
